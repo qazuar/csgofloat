@@ -1,5 +1,7 @@
 package ui;
 
+import listeners.MExitListener;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -42,6 +44,7 @@ public class UI {
         this.file = new JMenu("File");
 
         JMenuItem exit = new JMenuItem("Exit");
+        exit.addActionListener(new MExitListener());
 
         this.file.add(exit);
 
