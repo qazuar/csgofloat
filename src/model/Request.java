@@ -1,7 +1,10 @@
+package model;
+
+import enums.ClientAuth;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

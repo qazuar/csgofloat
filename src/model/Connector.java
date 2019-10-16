@@ -1,3 +1,8 @@
+package model;
+
+import enums.ClientAuth;
+import model.Request;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;

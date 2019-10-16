@@ -1,5 +1,9 @@
+package model;
+
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import model.Connector;
+import model.Request;
 
 public class DataMapper {
 
