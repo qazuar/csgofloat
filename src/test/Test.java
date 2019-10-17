@@ -19,7 +19,6 @@ public class Test {
             System.out.println(item.getPaintSeed());
             System.out.println(mItem.getPrice());
             System.out.println(System.lineSeparator());
-
         }
     }
 
