@@ -2,18 +2,19 @@ package model;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import enums.ApiEnum;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataMapper {
-
-    final static String API_ADDRESS = "https://api.csgofloat.com/";
 
     public static ItemObj getItem(String inspectLink) {
         Connector connector = new Connector(null);
         Request request = Request.newRequest();
 
-        request.setServer(API_ADDRESS);
+        request.setServer(ApiEnum.CSGOFLOAT_API.getPath());
         connector.get(request, "?url=" + inspectLink);
 
         Gson gson = new Gson();
@@ -35,9 +36,9 @@ public class DataMapper {
 
         ItemObj item = new ItemObj();
 
-        for (String key : map.keySet()) {
-            System.out.println(String.format("Key: %s -> Value: %s", key, map.get(key)));
-        }
+        //for (String key : map.keySet()) {
+        //    System.out.println(String.format("Key: %s -> Value: %s", key, map.get(key)));
+        //}
 
         item.setOrigin(String.format("%s", map.get("origin")));
         item.setQuality(String.format("%s", map.get("quality")));
@@ -65,5 +66,58 @@ public class DataMapper {
         item.setFloatValue(BigDecimal.valueOf(Double.valueOf(item.getFloatValue())).toString());
 
         return item;
+    }
+
+    public static List<MarketItemObj> getMarketItems(String path) {
+        List<MarketItemObj> items = new ArrayList<>();
+        List<String> links = new ArrayList<>();
+        List<String> assetIds = new ArrayList<>();
+        List<String> prices = new ArrayList<>();
+
+        Connector connector = new Connector(null);
+        Request request = Request.newRequest();
+        request.setServer(ApiEnum.STEAM_COMMUNITY_ADDRESS.getPath());
+
+        connector.get(request, path);
+
+        String response = request.getResponseXml();
+
+        String x, y, z;
+
+        for (String s : response.split(" ")) {
+            if (s.contains("+csgo") && !s.contains("%listing")) {
+                x = s.split("\\+csgo_econ_action_preview")[1].split("\"")[0].trim();
+
+                if (!links.contains(x)) {
+                    links.add(x);
+                }
+            }
+
+            if (s.contains("\"asset\":{\"currency\":0,\"appid\":730,\"contextid\":\"2\",\"id\":")) {
+                y = s.split("\"asset\"")[1].split("\"id\":")[1].split(",")[0].replace("\"", "");
+
+                if (!assetIds.contains(y)) {
+                    assetIds.add(y);
+                }
+            }
+        }
+
+        for (String s : response.split("span")) {
+            if (s.contains("market_listing_price_with_fee")) {
+                z = s.split("market_listing_price_with_fee\">")[1].replace("</", "").trim();
+
+                prices.add(z);
+            }
+        }
+
+        int index = 0;
+
+        for (String link : links) {
+            MarketItemObj item = new MarketItemObj(ApiEnum.STEAM_RUN_CSGO_PREFIX.getPath() + link.replace("%assetid%", assetIds.get(index)), prices.get(index));
+            items.add(item);
+            index++;
+        }
+
+        return items;
     }
 }

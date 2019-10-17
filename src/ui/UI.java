@@ -21,6 +21,11 @@ public class UI {
         //ItemObj item = DataMapper.getItem("steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20S76561198018551044A16150356934D6957723464052024574");
         //steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20M1933656880277202286A14818571315D7235154318050096329
 
+        steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20M1917896822095534739A 16970919548  D7962401646706473043
+        steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20M1917896822095534739A %assetid%    D7962401646706473043
+
+        steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20M1930280363025033830A16970919548D17044451657020905683
+
         System.out.println(item.getFullItemName());
         System.out.println(String.format("%s -> Range: %s, %s", item.getFloatValue(), item.getMinFloat(), item.getMaxFloat()));
     }
