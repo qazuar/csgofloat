@@ -48,6 +48,9 @@ public class ItemObj {
     private String weaponType;
     private String wearName;
 
+    private String fullItemNameClean;
+    private String exterior;
+
     public String getItemId() {
         return itemId;
     }
@@ -230,5 +233,21 @@ public class ItemObj {
 
     public void setWearName(String wearName) {
         this.wearName = wearName;
+    }
+
+    public String getFullItemNameClean() {
+        return fullItemNameClean;
+    }
+
+    public void setFullItemNameClean(String fullItemNameClean) {
+        this.fullItemNameClean = fullItemNameClean;
+    }
+
+    public String getExterior() {
+        return exterior;
+    }
+
+    public void setExterior(String exterior) {
+        this.exterior = exterior;
     }
 }

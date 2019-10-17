@@ -2,8 +2,6 @@ package model;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
-import model.Connector;
-import model.Request;
 
 public class DataMapper {
 
@@ -35,6 +33,10 @@ public class DataMapper {
 
         ItemObj item = new ItemObj();
 
+        //for (String key : map.keySet()) {
+        //    System.out.println(String.format("Key: %s -> Value: %s", key, map.get(key)));
+        //}
+
         item.setOrigin(String.format("%s", map.get("origin")));
         item.setQuality(String.format("%s", map.get("quality")));
         item.setRarity(String.format("%s", map.get("rarity")));
@@ -53,6 +55,9 @@ public class DataMapper {
         item.setOriginName(map.get("origin_name"));
         item.setWearName(map.get("wear_name"));
         item.setFullItemName(map.get("full_item_name"));
+
+        item.setFullItemNameClean(item.getFullItemName().split("\\(")[0]);
+        item.setExterior(item.getFullItemName().split("\\(")[1].replace(")", ""));
 
         return item;
     }

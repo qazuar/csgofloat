@@ -22,7 +22,7 @@ public class HintTextField extends JTextField implements FocusListener {
     public void focusGained(FocusEvent e) {
         if (this.getText().isEmpty()) {
             super.setText("");
-            super.setForeground(Color.decode("#acacac"));
+            super.setForeground(Color.decode("#000000"));
             showingHint = false;
         }
     }

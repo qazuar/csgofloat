@@ -7,7 +7,26 @@ import java.awt.*;
 
 public class UI {
 
-    private final static String TITLE = "CSGO FLOAT";
+    /*
+            String data = null;
+
+        try {
+            data = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
+        } catch (UnsupportedFlavorException e) {
+        } catch (IOException e) {
+        }
+
+        System.out.println(data);
+        //ItemObj item = DataMapper.getItem("steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20M2646353517640087992A16878067099D14739836218185522367");
+        //ItemObj item = DataMapper.getItem("steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20S76561198018551044A16150356934D6957723464052024574");
+        //steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20M1933656880277202286A14818571315D7235154318050096329
+
+        System.out.println(item.getFullItemName());
+        System.out.println(String.format("%s -> Range: %s, %s", item.getFloatValue(), item.getMinFloat(), item.getMaxFloat()));
+    }
+     */
+
+    private final static String TITLE = "CS:GO Float (API) UI";
     private final String VERSION = "1.0.0";
 
     private JFrame frame;
@@ -23,13 +42,17 @@ public class UI {
         setDefaultUI(new javax.swing.plaf.FontUIResource(Font.SANS_SERIF, Font.PLAIN, 11));
 
         this.frame = new JFrame(title);
-        this.frame.setPreferredSize(new Dimension(500, 500));
+        this.frame.setPreferredSize(new Dimension(400, 600));
 
         init();
     }
 
     private void init() {
         buildMenu();
+
+        SearchPanel main = new SearchPanel(this);
+
+        this.frame.add(main.build());
 
         this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -41,6 +64,8 @@ public class UI {
     private void buildMenu() {
         this.menuBar = new JMenuBar();
 
+
+        // File
         this.file = new JMenu("File");
 
         JMenuItem exit = new JMenuItem("Exit");
@@ -48,7 +73,15 @@ public class UI {
 
         this.file.add(exit);
 
+        // Help
+        this.help = new JMenu("Help");
+
+        JMenuItem about = new JMenuItem("About");
+
+        this.help.add(about);
+
         this.menuBar.add(file);
+        this.menuBar.add(help);
 
         this.frame.setJMenuBar(menuBar);
     }
@@ -73,5 +106,9 @@ public class UI {
                 //System.out.println(value);
                 UIManager.put(key, f);
         }
+    }
+
+    public JFrame getFrame() {
+        return this.frame;
     }
 }
