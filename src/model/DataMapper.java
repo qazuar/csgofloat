@@ -3,6 +3,8 @@ package model;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
+import java.math.BigDecimal;
+
 public class DataMapper {
 
     final static String API_ADDRESS = "https://api.csgofloat.com/";
@@ -33,9 +35,9 @@ public class DataMapper {
 
         ItemObj item = new ItemObj();
 
-        //for (String key : map.keySet()) {
-        //    System.out.println(String.format("Key: %s -> Value: %s", key, map.get(key)));
-        //}
+        for (String key : map.keySet()) {
+            System.out.println(String.format("Key: %s -> Value: %s", key, map.get(key)));
+        }
 
         item.setOrigin(String.format("%s", map.get("origin")));
         item.setQuality(String.format("%s", map.get("quality")));
@@ -58,6 +60,9 @@ public class DataMapper {
 
         item.setFullItemNameClean(item.getFullItemName().split("\\(")[0]);
         item.setExterior(item.getFullItemName().split("\\(")[1].replace(")", ""));
+
+        // A safety fix for really low float values
+        item.setFloatValue(BigDecimal.valueOf(Double.valueOf(item.getFloatValue())).toString());
 
         return item;
     }
