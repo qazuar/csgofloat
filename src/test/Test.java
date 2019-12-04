@@ -1,5 +1,6 @@
 package test;
 
+import enums.ExteriorEnum;
 import enums.MarketEnum;
 import model.*;
 
@@ -8,7 +9,7 @@ import java.util.List;
 public class Test {
 
     public static void main(String[] args) {
-        List<MarketItemObj> marketItems = DataMapper.getMarketItems(MarketEnum.TALON_KNIFE_FADE_FACTORY_NEW.getMarketLink());
+        List<MarketItemObj> marketItems = DataMapper.getMarketItems(MarketEnum.AWP_PRINCE.getMarketLink(ExteriorEnum.FACTORY_NEW.getUrl()));
 
         //marketItems.clear();
 
