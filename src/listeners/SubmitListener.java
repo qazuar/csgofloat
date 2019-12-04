@@ -32,7 +32,7 @@ public class SubmitListener implements ActionListener {
     }
 
     private boolean validateLink(String link) {
-        if (!link.contains("steam://rungame/730") || link.contains("%")) {
+        if (!link.contains("steam://rungame/730")) {
             return false;
         }
 
