@@ -32,7 +32,7 @@ public class UI {
      */
 
     private final static String TITLE = "CS:GO Float (API) UI";
-    private final String VERSION = "1.0.0";
+    private final String VERSION = "1.1.0";
 
     private JFrame frame;
 

@@ -9,7 +9,7 @@ import java.util.List;
 public class Test {
 
     public static void main(String[] args) {
-        List<MarketItemObj> marketItems = DataMapper.getMarketItems(MarketEnum.TALON_KNIFE_DOPPLER.getMarketLink(ExteriorEnum.FACTORY_NEW.getUrl()));
+        List<MarketItemObj> marketItems = DataMapper.getMarketItems(MarketEnum.AWP_THE_PRINCE.getMarketLink(ExteriorEnum.FACTORY_NEW.getUrl()));
 
         //marketItems.clear();
 

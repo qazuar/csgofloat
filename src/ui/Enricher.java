@@ -1,6 +1,8 @@
 package ui;
 
+import model.DataMapper;
 import model.ItemObj;
+import model.MarketItemObj;
 import utils.ImageUtil;
 
 import javax.imageio.ImageIO;
@@ -10,12 +12,14 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Enricher {
 
     private SearchPanel panel;
     private ItemObj item;
+    private java.util.List<MarketItemObj> items;
 
     private java.util.List<Component> components = new ArrayList<>();
 
@@ -35,6 +39,27 @@ public class Enricher {
         addDataLabel("Paint index:", item.getPaintIndex());
         addDataLabel("Paint seed:", item.getPaintSeed());
         addDataLabel("Origin:", item.getOriginName());
+
+        panel.getPanel().revalidate();
+        panel.getPanel().repaint();
+    }
+
+    public void build(java.util.List<MarketItemObj> items) {
+        this.items = items;
+        clearComponents();
+
+        int id = 1;
+        DecimalFormat df = new DecimalFormat("###.#####");
+
+        for (MarketItemObj mItem : items) {
+            ItemObj i = DataMapper.getItem(mItem.getInspectLink());
+
+            String fv = df.format(Double.parseDouble(i.getFloatValue()));
+
+            addDataArgsLabel("#" + id + " " + i.getFullItemNameClean(), fv, i.getPaintSeed().split("\\.")[0], i.getPaintIndex().split("\\.")[0], mItem.getPrice());
+
+            id ++;
+        }
 
         panel.getPanel().revalidate();
         panel.getPanel().repaint();
@@ -74,6 +99,26 @@ public class Enricher {
 
         components.add(jtext);
         components.add(jvalue);
+    }
+
+    private void addDataArgsLabel(String...args) {
+        Font textFont = new Font(Font.SANS_SERIF, Font.PLAIN, 11);
+        JLabel jtext = new JLabel();
+        jtext.setFont(textFont);
+
+        jtext.setPreferredSize(new Dimension(350, 20));
+        jtext.setHorizontalAlignment(SwingConstants.LEFT);
+
+        String text = "";
+
+        for (String s : args) {
+            text += s + "    ";
+        }
+
+        jtext.setText(text);
+
+        panel.getPanel().add(jtext);
+        components.add(jtext);
     }
 
     private void clearComponents() {
