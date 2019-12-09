@@ -44,6 +44,10 @@ public class SearchPanel {
         return this.panel;
     }
 
+    public JButton getSubmit() {
+        return this.submit;
+    }
+
     public HintTextField getInsertLink() {
         return this.insertLink;
     }

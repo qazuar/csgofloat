@@ -46,7 +46,7 @@ public class SubmitListener implements ActionListener {
     private int getLinkType(String link) {
         if (link.contains("steam://rungame/730")) {
             return 1;
-        } else if (link.contains("market")) {
+        } else if (link.contains("market/listings/730")) {
             return 2;
         }
 

@@ -45,9 +45,16 @@ public class Enricher {
     }
 
     public void build(java.util.List<MarketItemObj> items) {
+        panel.getSubmit().setEnabled(false);
+
         this.items = items;
         clearComponents();
 
+        Thread thread = new Thread(new ThreadedEnricher(this));
+        thread.start();
+    }
+
+    protected void build() {
         int id = 1;
         DecimalFormat df = new DecimalFormat("###.#####");
 
@@ -63,6 +70,8 @@ public class Enricher {
 
         panel.getPanel().revalidate();
         panel.getPanel().repaint();
+
+        panel.getSubmit().setEnabled(true);
     }
 
     private void addImageLabel() {
@@ -125,5 +134,19 @@ public class Enricher {
         for (Component c : components) {
             panel.getPanel().remove(c);
         }
+    }
+}
+
+class ThreadedEnricher implements Runnable {
+
+    private Enricher enricher;
+
+    ThreadedEnricher(Enricher enricher) {
+        this.enricher = enricher;
+    }
+
+    @Override
+    public void run() {
+        enricher.build();
     }
 }
