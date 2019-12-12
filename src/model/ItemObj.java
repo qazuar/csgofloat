@@ -127,7 +127,7 @@ public class ItemObj {
     }
 
     public String getPatternName() {
-        PatternUtil util = PatternUtilFinder.find(paintIndex);
+        PatternUtil util = PatternUtilFinder.find(weaponType, paintIndex);
 
         if (util == null) {
             return null;
