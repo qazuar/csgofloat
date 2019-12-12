@@ -31,13 +31,17 @@ public class Enricher {
         this.item = item;
         clearComponents();
 
+        String paintSeed = String.valueOf(item.getPaintSeed());
+        String patternName = item.getPatternName();
+        paintSeed = patternName == null ? paintSeed : paintSeed + "(" + patternName + ")";
+
         addImageLabel();
         addDataLabel("Name:", item.getFullItemNameClean());
         addDataLabel("Exterior:", item.getExterior());
         addDataLabel("Rarity:", item.getRarityName());
         addDataLabel("Float value:", item.getFloatValue());
-        addDataLabel("Paint index:", item.getPaintIndex());
-        addDataLabel("Paint seed:", item.getPaintSeed());
+        addDataLabel("Paint index:", String.valueOf(item.getPaintIndex()));
+        addDataLabel("Paint seed:", paintSeed);
         addDataLabel("Origin:", item.getOriginName());
 
         panel.getPanel().revalidate();
@@ -63,7 +67,10 @@ public class Enricher {
 
             String fv = df.format(Double.parseDouble(i.getFloatValue()));
 
-            addDataArgsLabel("#" + id + " " + i.getFullItemNameClean(), fv, i.getPaintSeed().split("\\.")[0], i.getPaintIndex().split("\\.")[0], mItem.getPrice());
+            String paintSeed = i.getPatternName();
+            paintSeed = paintSeed == null ? String.valueOf(i.getPaintSeed()) : paintSeed;
+
+            addDataArgsLabel("#" + id + " " + i.getFullItemNameClean(), fv, paintSeed, String.valueOf(i.getPaintIndex()), mItem.getPrice());
 
             id ++;
         }

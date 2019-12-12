@@ -78,7 +78,7 @@ public class DataMapper {
         Request request = Request.newRequest();
         request.setServer(ApiEnum.STEAM_COMMUNITY_ADDRESS.getPath());
 
-        connector.get(request, path);
+        connector.get(request, path + "?query=&start=0&count=20");
 
         String response = request.getResponseXml();
 

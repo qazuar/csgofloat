@@ -1,5 +1,8 @@
 package model;
 
+import utils.PatternUtil;
+import utils.PatternUtilFinder;
+
 public class ItemObj {
 
     // FROM CSGOFLOAT DOC
@@ -26,13 +29,13 @@ public class ItemObj {
 
     private String itemId;
     private String definitionIndex;
-    private String paintIndex;
+    private int paintIndex;
     private String rarity;
     private String rarityName;
     private String quality;
     private String qualityName;
     private String paintWear;
-    private String paintSeed; // Seed for the RNG that defines how to place the skin texture
+    private int paintSeed; // Seed for the RNG that defines how to place the skin texture
     private String killEaterValue; // If the item is StatTrak, this is the amount of kills
     private String customName; // If the item has a nametag, this is the custom name
     private String[] stickers; // Contains data on the placement of stickers
@@ -67,12 +70,12 @@ public class ItemObj {
         this.definitionIndex = definitionIndex;
     }
 
-    public String getPaintIndex() {
+    public int getPaintIndex() {
         return paintIndex;
     }
 
     public void setPaintIndex(String paintIndex) {
-        this.paintIndex = paintIndex;
+        this.paintIndex = Integer.parseInt(paintIndex.split("\\.")[0]);
     }
 
     public String getRarity() {
@@ -115,12 +118,22 @@ public class ItemObj {
         this.paintWear = paintWear;
     }
 
-    public String getPaintSeed() {
+    public int getPaintSeed() {
         return paintSeed;
     }
 
     public void setPaintSeed(String paintSeed) {
-        this.paintSeed = paintSeed;
+        this.paintSeed = Integer.parseInt(paintSeed.split("\\.")[0]);
+    }
+
+    public String getPatternName() {
+        PatternUtil util = PatternUtilFinder.find(paintIndex);
+
+        if (util == null) {
+            return null;
+        }
+
+        return util.validate(paintSeed);
     }
 
     public String getKillEaterValue() {
