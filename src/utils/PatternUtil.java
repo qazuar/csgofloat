@@ -2,6 +2,6 @@ package utils;
 
 public interface PatternUtil {
 
-    String validate(int index);
+    String validate(int seed);
 
 }

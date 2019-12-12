@@ -31,10 +31,10 @@ public class KarambitMarbleFadePU implements PatternUtil {
     }
 
     @Override
-    public String validate(int index) {
+    public String validate(int seed) {
         for (String key : indexes.keySet()) {
             for (Integer i : indexes.get(key)) {
-                if (index == i) {
+                if (seed == i) {
                     return key;
                 }
             }
