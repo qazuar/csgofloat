@@ -1,6 +1,7 @@
-package utils;
+package utils.patterns;
 
-import utils.patterns.KarambitMarbleFadePU;
+import utils.PatternUtil;
+import utils.patterns.weapons.*;
 
 public class PatternUtilFinder {
 
@@ -8,6 +9,7 @@ public class PatternUtilFinder {
         String key = weaponType.toLowerCase() + "_" + index;
         switch (key) {
             case "karambit_413": return new KarambitMarbleFadePU();
+            case "karambit_?": return new KarambitFadePU();
         }
 
         return null;

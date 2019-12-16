@@ -1,7 +1,7 @@
 package model;
 
 import utils.PatternUtil;
-import utils.PatternUtilFinder;
+import utils.patterns.PatternUtilFinder;
 
 public class ItemObj {
 

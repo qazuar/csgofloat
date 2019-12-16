@@ -34,7 +34,7 @@ public class SubmitListener implements ActionListener {
                     enricher.build(item);
                     break;
                 case 2:
-                    List<MarketItemObj> marketItems = DataMapper.getMarketItems(link.replace(ApiEnum.STEAM_COMMUNITY_ADDRESS.getPath(), ""));
+                    List<MarketItemObj> marketItems = DataMapper.getMarketItems(link.replace(ApiEnum.STEAM_COMMUNITY_ADDRESS.getPath(), ""), 30);
                     enricher.build(marketItems);
                     break;
             }

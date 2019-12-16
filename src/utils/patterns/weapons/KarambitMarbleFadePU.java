@@ -1,4 +1,4 @@
-package utils.patterns;
+package utils.patterns.weapons;
 
 import utils.PatternUtil;
 

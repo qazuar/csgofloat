@@ -68,7 +68,9 @@ public class DataMapper {
         return item;
     }
 
-    public static List<MarketItemObj> getMarketItems(String path) {
+    public static List<MarketItemObj> getMarketItems(String path, int count) {
+        String queryStartCount = "?query=&start=0&count=" + count;
+
         List<MarketItemObj> items = new ArrayList<>();
         List<String> links = new ArrayList<>();
         List<String> assetIds = new ArrayList<>();
@@ -78,7 +80,7 @@ public class DataMapper {
         Request request = Request.newRequest();
         request.setServer(ApiEnum.STEAM_COMMUNITY_ADDRESS.getPath());
 
-        connector.get(request, path + "?query=&start=0&count=20");
+        connector.get(request, path + queryStartCount);
 
         String response = request.getResponseXml();
 
