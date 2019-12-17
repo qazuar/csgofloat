@@ -21,12 +21,6 @@ public class Receiver {
     public ItemObj getItem(String inspectLink) {
         ItemObj item = cache.get(inspectLink);
 
-        if (item == null) {
-            System.out.println("! Received from cache");
-        } else {
-            System.out.println("Received from cache");
-        }
-
         item = item == null ? fetch(inspectLink) : item;
 
         return item;

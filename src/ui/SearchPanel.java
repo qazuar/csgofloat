@@ -17,7 +17,7 @@ public class SearchPanel {
 
     public SearchPanel(UI ui) {
         this.ui = ui;
-        this.insertLink = new HintTextField("insert link here");
+        this.insertLink = new HintTextField("insert link");
         this.insertLink.setPreferredSize(new Dimension(300, 25));
         this.submit = new JButton("Submit");
         this.submit.addActionListener(new SubmitListener(this));
