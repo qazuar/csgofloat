@@ -16,10 +16,10 @@ public class KarambitFadePU implements PatternUtil {
     }
 
     private void init() {
-        indexes.put("90/10", Arrays.asList(412));
-        indexes.put("90/3/7", Arrays.asList(359, 393, 602, 649, 701, 16, 146, 241, 541, 688));
-        indexes.put("90/5/5", Arrays.asList(281, 673, 743, 292, 344, 994, 152, 777, 628, 792));
-        indexes.put("4th", Arrays.asList(332, 129, 918, 126, 787, 874, 908, 923, 48, 780));
+        indexes.put("90/10", Arrays.asList(146));
+        indexes.put("90/3/7", Arrays.asList(1));
+        indexes.put("90/5/5", Arrays.asList(1));
+        indexes.put("90/7/3", Arrays.asList(1));
     }
 
     @Override

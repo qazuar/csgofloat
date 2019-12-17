@@ -1,7 +1,7 @@
 package listeners;
 
 import enums.ApiEnum;
-import model.DataMapper;
+import model.Receiver;
 import model.ItemObj;
 import model.MarketItemObj;
 import ui.Enricher;
@@ -16,10 +16,12 @@ public class SubmitListener implements ActionListener {
 
     private SearchPanel panel;
     private Enricher enricher;
+    private Receiver receiver;
 
     public SubmitListener(SearchPanel panel) {
         this.panel = panel;
-        this.enricher = new Enricher(panel);
+        this.receiver = new Receiver();
+        this.enricher = new Enricher(panel, this.receiver);
     }
 
     @Override
@@ -30,11 +32,11 @@ public class SubmitListener implements ActionListener {
         if (linkType > 0) {
             switch (linkType) {
                 case 1:
-                    ItemObj item = DataMapper.getItem(link);
+                    ItemObj item = receiver.getItem(link);
                     enricher.build(item);
                     break;
                 case 2:
-                    List<MarketItemObj> marketItems = DataMapper.getMarketItems(link.replace(ApiEnum.STEAM_COMMUNITY_ADDRESS.getPath(), ""), 30);
+                    List<MarketItemObj> marketItems = receiver.getMarketItems(link.replace(ApiEnum.STEAM_COMMUNITY_ADDRESS.getPath(), ""), 30);
                     enricher.build(marketItems);
                     break;
             }

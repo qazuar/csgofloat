@@ -9,7 +9,7 @@ public class PatternUtilFinder {
         String key = weaponType.toLowerCase() + "_" + index;
         switch (key) {
             case "karambit_413": return new KarambitMarbleFadePU();
-            case "karambit_?": return new KarambitFadePU();
+            case "karambit_38?": return new KarambitFadePU();
         }
 
         return null;

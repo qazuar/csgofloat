@@ -1,6 +1,6 @@
 package ui;
 
-import model.DataMapper;
+import model.Receiver;
 import model.ItemObj;
 import model.MarketItemObj;
 import utils.ImageUtil;
@@ -20,11 +20,13 @@ public class Enricher {
     private SearchPanel panel;
     private ItemObj item;
     private java.util.List<MarketItemObj> items;
+    private Receiver receiver;
 
     private java.util.List<Component> components = new ArrayList<>();
 
-    public Enricher(SearchPanel panel) {
+    public Enricher(SearchPanel panel, Receiver receiver) {
         this.panel = panel;
+        this.receiver = receiver;
     }
 
     public void build(ItemObj item) {
@@ -63,7 +65,7 @@ public class Enricher {
         DecimalFormat df = new DecimalFormat("###.#####");
 
         for (MarketItemObj mItem : items) {
-            ItemObj i = DataMapper.getItem(mItem.getInspectLink());
+            ItemObj i = receiver.getItem(mItem.getInspectLink());
 
             String fv = df.format(Double.parseDouble(i.getFloatValue()));
 

@@ -6,11 +6,33 @@ import enums.ApiEnum;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class DataMapper {
+public class Receiver {
 
-    public static ItemObj getItem(String inspectLink) {
+    private Map<String, ItemObj> cache;
+
+    public Receiver() {
+        this.cache = new HashMap<>();
+    }
+
+    public ItemObj getItem(String inspectLink) {
+        ItemObj item = cache.get(inspectLink);
+
+        if (item == null) {
+            System.out.println("! Received from cache");
+        } else {
+            System.out.println("Received from cache");
+        }
+
+        item = item == null ? fetch(inspectLink) : item;
+
+        return item;
+    }
+
+    private ItemObj fetch(String inspectLink) {
         Connector connector = new Connector(null);
         Request request = Request.newRequest();
 
@@ -26,10 +48,14 @@ public class DataMapper {
             map = head.get(iteminfo);
         }
 
-        return map2ItemObj(map);
+        ItemObj item = map2ItemObj(map);
+
+        cache.put(inspectLink, item);
+
+        return item;
     }
 
-    private static ItemObj map2ItemObj(LinkedTreeMap<String, String> map) {
+    private ItemObj map2ItemObj(LinkedTreeMap<String, String> map) {
         if (map == null) {
             return null;
         }
@@ -68,7 +94,7 @@ public class DataMapper {
         return item;
     }
 
-    public static List<MarketItemObj> getMarketItems(String path, int count) {
+    public List<MarketItemObj> getMarketItems(String path, int count) {
         String queryStartCount = "?query=&start=0&count=" + count;
 
         List<MarketItemObj> items = new ArrayList<>();
