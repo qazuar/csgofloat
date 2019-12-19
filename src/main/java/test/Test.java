@@ -20,7 +20,7 @@ public class Test {
 
 class MarketChecker implements Runnable {
 
-    final int SLEEP_TIME = 20000;
+    final int SLEEP_TIME = 30000;
     Receiver receiver;
 
     MarketChecker(Receiver receiver) {
@@ -33,55 +33,36 @@ class MarketChecker implements Runnable {
         List<MarketItemObj> mItems;
         LocalDateTime timestamp;
 
-        int previousFTCount = 0;
-        int previousMWCount = 0;
+        int previousCount = 0;
+        double fv = 0.1;
+        String target = MarketEnum.M4A4_THE_EMPEROR.getMarketLink(ExteriorEnum.MINIMAL_WEAR.getUrl(), true);
 
         try {
             while (true) {
-                //System.out.println("Checking FT");
+                int counterId = 1;
                 timestamp = LocalDateTime.now();
 
-                mItems = receiver.getMarketItems(MarketEnum.AK47_WILD_LOTUS.getMarketLink(ExteriorEnum.FIELD_TESTED.getUrl()), 10);
+                mItems = receiver.getMarketItems(target, 20);
 
-                if (previousFTCount > 0) {
-                    if (mItems.size() != previousFTCount) {
-                        System.out.println(String.format("%s: AK FT count has changed from %s to %s", timestamp.toString(), previousFTCount, mItems.size()));
+                if (previousCount > 0) {
+                    if (mItems.size() != previousCount) {
+                        System.out.println(String.format("%s: Count has changed from %s to %s", timestamp.toString(), previousCount, mItems.size()));
                     }
                 } else {
-                    System.out.println(String.format("%s: Found %s AK FT", timestamp.toString(), mItems.size()));
+                    System.out.println(String.format("%s: Found %s items", timestamp.toString(), mItems.size()));
                 }
 
-                previousFTCount = mItems.size();
+                previousCount = mItems.size();
 
                 for (MarketItemObj mItem : mItems) {
                     ItemObj item = receiver.getItem(mItem.getInspectLink());
-                    double fv = Double.parseDouble(item.getFloatValue());
+                    double cfv = Double.parseDouble(item.getFloatValue());
 
-                    if (fv < 0.2) {
-                        System.out.println(timestamp.toString() + ": Found AK47 with < 0.2 float" + " (" + fv + ")");
+                    if (cfv < fv) {
+                        System.out.println(String.format("%s: Item #%s with < %s float (%s) [%s]", timestamp.toString(), counterId, fv, cfv, mItem.getPrice()));
                     }
-                }
 
-                //System.out.println("Checking MW");
-                mItems = receiver.getMarketItems(MarketEnum.AK47_WILD_LOTUS.getMarketLink(ExteriorEnum.MINIMAL_WEAR.getUrl()), 10);
-
-                if (previousMWCount > 0) {
-                    if (mItems.size() != previousMWCount) {
-                        System.out.println(String.format("%s: AK MW count has changed from %s to %s", timestamp.toString(), previousMWCount, mItems.size()));
-                    }
-                } else {
-                    System.out.println(String.format("%s: Found %s AK MW", timestamp.toString(), mItems.size()));
-                }
-
-                previousMWCount = mItems.size();
-
-                for (MarketItemObj mItem : mItems) {
-                    ItemObj item = receiver.getItem(mItem.getInspectLink());
-                    double fv = Double.parseDouble(item.getFloatValue());
-
-                    if (fv < 0.09) {
-                        System.out.println(timestamp.toString() + ": Found AK47 with < 0.12 float" + " (" + fv + ")");
-                    }
+                    counterId ++;
                 }
 
                 Thread.sleep(SLEEP_TIME);
