@@ -5,7 +5,9 @@ import main.java.enums.MarketEnum;
 import main.java.model.*;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Test {
 
@@ -30,15 +32,17 @@ class MarketChecker implements Runnable {
     @Override
     public void run() {
         System.out.println("Starting job");
+        Map<String, ItemObj> savedItems = new HashMap<>();
         List<MarketItemObj> mItems;
         LocalDateTime timestamp;
 
         int previousCount = 0;
-        double fv = 0.1;
+        double fv = 0.4;
         String target = MarketEnum.M4A4_THE_EMPEROR.getMarketLink(ExteriorEnum.MINIMAL_WEAR.getUrl(), true);
 
         try {
             while (true) {
+                System.out.println(String.format("Currently stored %s items", savedItems.size()));
                 int counterId = 1;
                 timestamp = LocalDateTime.now();
 
@@ -58,8 +62,9 @@ class MarketChecker implements Runnable {
                     ItemObj item = receiver.getItem(mItem.getInspectLink());
                     double cfv = Double.parseDouble(item.getFloatValue());
 
-                    if (cfv < fv) {
-                        System.out.println(String.format("%s: Item #%s with < %s float (%s) [%s]", timestamp.toString(), counterId, fv, cfv, mItem.getPrice()));
+                    if (cfv < fv && savedItems.get(mItem.getInspectLink()) == null) {
+                        savedItems.put(mItem.getInspectLink(), item);
+                        System.out.println(String.format("%s: Item #%s has < %s float (%s) [%s]", timestamp.toString(), counterId, fv, cfv, mItem.getPrice()));
                     }
 
                     counterId ++;
