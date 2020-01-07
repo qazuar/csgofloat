@@ -36,39 +36,36 @@ class MarketChecker implements Runnable {
         List<MarketItemObj> mItems;
         LocalDateTime timestamp;
 
-        int previousCount = 0;
-        double fv = 0.4;
-        String target = MarketEnum.M4A4_THE_EMPEROR.getMarketLink(ExteriorEnum.MINIMAL_WEAR.getUrl(), true);
+        boolean init = true;
+        int fetchCount = 30;
+        String target = MarketEnum.AK47_REDLINE.getMarketLink(ExteriorEnum.FIELD_TESTED.getUrl(), false);
 
         try {
             while (true) {
-                System.out.println(String.format("Currently stored %s items", savedItems.size()));
                 int counterId = 1;
                 timestamp = LocalDateTime.now();
 
-                mItems = receiver.getMarketItems(target, 20);
+                mItems = receiver.getMarketItems(target, fetchCount);
 
-                if (previousCount > 0) {
-                    if (mItems.size() != previousCount) {
-                        System.out.println(String.format("%s: Count has changed from %s to %s", timestamp.toString(), previousCount, mItems.size()));
-                    }
-                } else {
+                if (init) {
                     System.out.println(String.format("%s: Found %s items", timestamp.toString(), mItems.size()));
                 }
 
-                previousCount = mItems.size();
-
                 for (MarketItemObj mItem : mItems) {
+                    boolean isNew = savedItems.get(mItem.getInspectLink()) == null && init;
+
                     ItemObj item = receiver.getItem(mItem.getInspectLink());
                     double cfv = Double.parseDouble(item.getFloatValue());
 
-                    if (cfv < fv && savedItems.get(mItem.getInspectLink()) == null) {
+                    if (savedItems.get(mItem.getInspectLink()) == null) {
                         savedItems.put(mItem.getInspectLink(), item);
-                        System.out.println(String.format("%s: Item #%s has < %s float (%s) [%s]", timestamp.toString(), counterId, fv, cfv, mItem.getPrice()));
+                        System.out.println(String.format("%s: Item #%s ~> float (%s) [%s] %s", timestamp.toString(), counterId, cfv, mItem.getPrice(), isNew ? "[NEW]" : ""));
                     }
 
                     counterId ++;
                 }
+
+                init = false;
 
                 Thread.sleep(SLEEP_TIME);
             }
