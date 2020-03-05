@@ -32,14 +32,18 @@ class MarketChecker implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Starting job");
+        MarketEnum targetItem = MarketEnum.SPORT_GLOVES_PANDORA;
+        ExteriorEnum exterior = ExteriorEnum.FIELD_TESTED;
+
         Map<String, ItemObj> savedItems = new HashMap<>();
         MarketObj marketObj;
         LocalDateTime timestamp;
 
         boolean repeat = false;
         int fetchCount = 50;
-        String target = MarketEnum.AK47_REDLINE.getMarketLink(ExteriorEnum.FIELD_TESTED.getUrl(), false);
+        String target = targetItem.getMarketLink(exterior.getUrl(), false);
+
+        System.out.println("Searching for " + targetItem.name() + " (" + exterior.getName() + ")");
 
         try {
             while (true) {
@@ -49,7 +53,13 @@ class MarketChecker implements Runnable {
                 marketObj = receiver.getMarketObject(target, fetchCount);
 
                 if (savedItems.isEmpty()) {
-                    System.out.println(String.format("%s: Found %s items", timestamp.toString(), marketObj.getItems().size()));
+                    System.out.println(String.format("Total sales count: %s", marketObj.getTotalSales()));
+                    System.out.println(String.format("Highest sales price: $%s", marketObj.getHighestSalesPrice().intValue()));
+                    System.out.println(String.format("Lowest sales price: $%s", marketObj.getLowestSalesPrice().intValue()));
+                    System.out.println(String.format("Average sales price: $%s", marketObj.getAverageSalesPrice().intValue()));
+                    System.out.println(" ");
+
+                    System.out.println(String.format("%s: Found %s listings", timestamp.toString(), marketObj.getItems().size()));
                 }
 
                 for (MarketItemObj mItem : marketObj.getItems()) {

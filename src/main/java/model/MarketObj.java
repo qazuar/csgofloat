@@ -29,7 +29,7 @@ public class MarketObj {
         }
     }
 
-    public double getLowestSalesPrice() {
+    public Double getLowestSalesPrice() {
         double lowest = 999999;
 
         for (MarketSaleObj o : marketSale) {
@@ -41,7 +41,7 @@ public class MarketObj {
         return lowest;
     }
 
-    public double getHighestSalesPrice() {
+    public Double getHighestSalesPrice() {
         double highest = 0;
 
         for (MarketSaleObj o : marketSale) {
@@ -53,13 +53,25 @@ public class MarketObj {
         return highest;
     }
 
-    public double getAverageSalesPrice() {
+    public Double getAverageSalesPrice() {
         double total = 0;
+        int count = 0;
 
         for (MarketSaleObj o : marketSale) {
             total += o.getPrice();
+            count += o.getQuantity();
         }
 
-        return total / marketSale.size();
+        return total / count;
+    }
+
+    public int getTotalSales() {
+        int count = 0;
+
+        for (MarketSaleObj o : marketSale) {
+            count += o.getQuantity();
+        }
+
+        return count;
     }
 }
