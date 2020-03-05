@@ -1,16 +1,15 @@
 package main.java.listeners;
 
 import main.java.enums.ApiEnum;
+import main.java.model.MarketObj;
 import main.java.model.Receiver;
 import main.java.model.ItemObj;
-import main.java.model.MarketItemObj;
 import main.java.ui.Enricher;
 import main.java.ui.SearchPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 public class SubmitListener implements ActionListener {
 
@@ -36,8 +35,8 @@ public class SubmitListener implements ActionListener {
                     enricher.build(item);
                     break;
                 case 2:
-                    List<MarketItemObj> marketItems = receiver.getMarketItems(link.replace(ApiEnum.STEAM_COMMUNITY_ADDRESS.getPath(), ""), 30);
-                    enricher.build(marketItems);
+                    MarketObj marketObj = receiver.getMarketObject(link.replace(ApiEnum.STEAM_COMMUNITY_ADDRESS.getPath(), ""), 30);
+                    enricher.build(marketObj.getItems());
                     break;
             }
         } else {

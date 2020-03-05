@@ -5,6 +5,7 @@ import main.java.enums.MarketEnum;
 import main.java.model.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +23,8 @@ public class Test {
 
 class MarketChecker implements Runnable {
 
-    final int SLEEP_TIME = 30000;
-    Receiver receiver;
+    private final int SLEEP_TIME = 30000;
+    private Receiver receiver;
 
     MarketChecker(Receiver receiver) {
         this.receiver = receiver;
@@ -33,44 +34,73 @@ class MarketChecker implements Runnable {
     public void run() {
         System.out.println("Starting job");
         Map<String, ItemObj> savedItems = new HashMap<>();
-        List<MarketItemObj> mItems;
+        MarketObj marketObj;
         LocalDateTime timestamp;
 
-        boolean init = true;
-        int fetchCount = 30;
-        String target = MarketEnum.AK47_REDLINE.getMarketLink(ExteriorEnum.FIELD_TESTED.getUrl(), false);
+        boolean repeat = false;
+        int fetchCount = 50;
+        String target = MarketEnum.SPORT_GLOVES_PANDORA.getMarketLink(ExteriorEnum.FIELD_TESTED.getUrl(), false);
 
         try {
             while (true) {
                 int counterId = 1;
                 timestamp = LocalDateTime.now();
 
-                mItems = receiver.getMarketItems(target, fetchCount);
+                marketObj = receiver.getMarketObject(target, fetchCount);
 
-                if (init) {
-                    System.out.println(String.format("%s: Found %s items", timestamp.toString(), mItems.size()));
+                if (savedItems.isEmpty()) {
+                    System.out.println(String.format("%s: Found %s items", timestamp.toString(), marketObj.getItems().size()));
                 }
 
-                for (MarketItemObj mItem : mItems) {
-                    boolean isNew = savedItems.get(mItem.getInspectLink()) == null && init;
-
+                for (MarketItemObj mItem : marketObj.getItems()) {
                     ItemObj item = receiver.getItem(mItem.getInspectLink());
-                    double cfv = Double.parseDouble(item.getFloatValue());
 
                     if (savedItems.get(mItem.getInspectLink()) == null) {
                         savedItems.put(mItem.getInspectLink(), item);
-                        System.out.println(String.format("%s: Item #%s ~> float (%s) [%s] %s", timestamp.toString(), counterId, cfv, mItem.getPrice(), isNew ? "[NEW]" : ""));
+                        System.out.println(String.format("%s: Item #%s ~> float=%s, paintindex=%s, seed=%s [%s]", timestamp.toString(), counterId, item.getFloatValue(), item.getPaintIndex(), item.getPaintSeed(), mItem.getPrice()));
                     }
 
                     counterId ++;
                 }
 
-                init = false;
+                for (ItemObj item : getMissingItems(savedItems, marketObj.getItems())) {
+                    System.out.println(String.format("%s: Item is missing ~> float=%s, paintindex=%s, seed=%s", timestamp.toString(), item.getFloatValue(), item.getPaintIndex(), item.getPaintSeed()));
+                }
+
+                if (!repeat) {
+                    break;
+                }
 
                 Thread.sleep(SLEEP_TIME);
             }
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private List<ItemObj> getMissingItems(Map<String, ItemObj> savedItems, List<MarketItemObj> mItems) {
+        List<ItemObj> items = new ArrayList<>();
+        List<String> delete = new ArrayList<>();
+
+        for (String key : savedItems.keySet()) {
+            boolean found = false;
+
+            for (MarketItemObj mItem : mItems) {
+                if (mItem.getInspectLink().equalsIgnoreCase(key)) {
+                    found = true;
+                }
+            }
+
+            if (!found) {
+                items.add(savedItems.get(key));
+                delete.add(key);
+            }
+        }
+
+        for (String key : delete) {
+            savedItems.remove(key);
+        }
+
+        return items;
     }
 }

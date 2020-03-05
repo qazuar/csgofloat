@@ -88,10 +88,10 @@ public class Receiver {
         return item;
     }
 
-    public List<MarketItemObj> getMarketItems(String path, int count) {
+    public MarketObj getMarketObject(String path, int count) {
         String queryStartCount = "?query=&start=0&count=" + count;
 
-        List<MarketItemObj> items = new ArrayList<>();
+        MarketObj obj = new MarketObj();
         List<String> links = new ArrayList<>();
         List<String> assetIds = new ArrayList<>();
         List<String> prices = new ArrayList<>();
@@ -132,14 +132,23 @@ public class Receiver {
             }
         }
 
+        for (String s : request.getStrings()) {
+            if (s.contains("var line1=[[")) { // Line is technically var line1=[["Nov..
+                String salesHistory = s.replace("var line1=", "").trim();
+                String[] salesHistoryArray = salesHistory.split("],");
+                System.out.println(salesHistoryArray);
+                break;
+            }
+        }
+
         int index = 0;
 
         for (String link : links) {
             MarketItemObj item = new MarketItemObj(ApiEnum.STEAM_RUN_CSGO_PREFIX.getPath() + link.replace("%assetid%", assetIds.get(index)), prices.get(index));
-            items.add(item);
+            obj.getItems().add(item);
             index++;
         }
 
-        return items;
+        return obj;
     }
 }
