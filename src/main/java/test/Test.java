@@ -39,7 +39,7 @@ class MarketChecker implements Runnable {
 
         boolean repeat = false;
         int fetchCount = 50;
-        String target = MarketEnum.SPORT_GLOVES_PANDORA.getMarketLink(ExteriorEnum.FIELD_TESTED.getUrl(), false);
+        String target = MarketEnum.AK47_REDLINE.getMarketLink(ExteriorEnum.FIELD_TESTED.getUrl(), false);
 
         try {
             while (true) {

@@ -136,7 +136,7 @@ public class Receiver {
             if (s.contains("var line1=[[")) { // Line is technically var line1=[["Nov..
                 String salesHistory = s.replace("var line1=", "").trim();
                 String[] salesHistoryArray = salesHistory.split("],");
-                System.out.println(salesHistoryArray);
+                obj.addMarketSale(salesHistoryArray);
                 break;
             }
         }
